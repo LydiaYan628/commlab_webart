@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Walking in the Campus</title>
+    <link rel="stylesheet" href="style.css">
+  	<script src="p5.js"></script>
+  	<link href="https://fonts.googleapis.com/css?family=Cinzel&display=swap" rel="stylesheet">
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js">
+      </script>
+    <script>
+      let bg, playbtn, seek_bar;
+      function BGMplay(){
+        bg= new Audio();
+        // http://url.cn/58aPVpD The Tide - Uechi Masaya
+        bg.src="audio/BGM.mp3";
+        bg.loop=true;
+        // bg.play();
+        playbtn= document.getElementById("music-button");
+        // bug: the asseventlistener doesn't work
+        playbtn.addEventListener("click",playPause);
+        function playPause(){
+          if (bg.paused){
+          bg.play();
+            document.getElementById("music-control").innerHTML="music off";
+          }else{
+            bg.pause();
+            document.getElementById("music-control").innerHTML="music on";
+          }
+        }
+      }
+
+      window.addEventListener("load",BGMplay);
+    </script>
+  </head>
+  <body>
+    <audio src="audio/BGM.mp3" id='music' loop></audio>
+  	<button type="button" name="button" id="music-button" >
+  		<p id="music-control">music on</p>
+  	</button>
+
+<div id="bigdiv1">
+  <div id="realtimebox">
+    <img src="image/光圈.png" alt="light" class="light" >
+    <!-- clock space -->
+    <!-- https://www.timeanddate.com/date/duration.html -->
+    <iframe src="http://free.timeanddate.com/clock/i726x3io/n102/szw400/szh400/hbw0/hfc000/cf100/hgr0/fav0/fiv0/mqcfff/mql15/mqw4/mqd94/mhcfff/mhl15/mhw4/mhd94/mmv0/hhcbbb/hmcddd/hsceee" frameborder="0" width="400" height="400" id="clock1"></iframe>
+    <div id="coverup1" onclick="clock1()">
+    </div>
+
+  </div>
+</div>
+
+
+<!-- selection page -->
+<div id="bigdiv2">
+  <button type="button" name="button" onclick="artist()" id="abtn">Learn more about the artist</button>
+  <button type="button" name="button" onclick="clockback()" class="backbtn">Back</button>
+  <h1 id="vidselect">Would you prefer to...</h1>
+  <div id="walkbox" class="mainbox">
+    <img src="image/光圈.png" alt="light" class="lightsmall">
+    <img src="image/走路.png" alt="walk" id="walk" onclick="walk()" >
+  </div>
+  <div id="sitbox" class="mainbox">
+    <img src="image/光圈.png" alt="light" class="lightsmall">
+    <img src="image/长椅.png" alt="bench" id="bench" onclick="sit()" >
+  </div>
+</div>
+
+<div id="bigdiv3">
+    <button type="button" name="button" onclick="walkback()" class="backbtn">Back</button>
+
+  <!-- Choose your ground texture -->
+    <div id="ground">
+      <p id="choosetexture">Choose the ground texture</p>
+
+        <p class="texture" id="p1">dryland</p>
+        <p class="texture" id="p2">grass</p>
+        <p class="texture" id="p3">snow</p>
+        <p class="texture" id="p4">woodenbridge</p>
+        <p class="texture" id="p5">leaves</p>
+        <p class="texture" id="p6">stones</p>
+
+
+<button class="choice" type="button" name="button" id="y1" onclick="y1()">play</button>
+<button class="choice" type="button" name="button" id="y2"onclick="y2()">play</button>
+<button class="choice" type="button" name="button" id="y3"onclick="y3()">play</button>
+<button class="choice" type="button" name="button" id="y4"onclick="y4()">play</button>
+<button class="choice" type="button" name="button" id="y5"onclick="y5()">play</button>
+<button class="choice" type="button" name="button" id="y6"onclick="y6()">play</button>
+<button class="choice" type="button" name="button" id="n1"onclick="n1()">pause</button>
+<button class="choice" type="button" name="button" id="n2"onclick="n2()">pause</button>
+<button class="choice" type="button" name="button" id="n3"onclick="n3()">pause</button>
+<button class="choice" type="button" name="button" id="n4"onclick="n4()">pause</button>
+<button class="choice" type="button" name="button" id="n5"onclick="n5()">pause</button>
+<button class="choice" type="button" name="button" id="n6"onclick="n6()">pause</button>
+
+<audio src="audio/dirt.wav" id="a1" loop></audio>
+<audio src="audio/longgrass.wav" id="a2" loop></audio>
+<audio src="audio/snowwalk.wav" id="a3" loop></audio>
+<audio src="audio/woodenbridge.wav" id="a4" loop></audio>
+<audio src="audio/leaves.wav" id="a5" loop></audio>
+<audio src="audio/stones.wav" id="a6" loop></audio>
+    <!-- <p id="grass" onclick="grass()" class="choice"><audio src="audio/longgrass.wav" id="agrass">
+    grass
+    </audio></p> -->
+    <!-- <p id="snow" onclick="snow()" class="choice"><audio src="audio/freshsnowwalk.wav" id="asnow">
+    snowland
+    </audio></p> -->
+    <!-- <p id="wood" onclick="wood()" class="choice"><audio src="audio/woodenbridge.wav" id="awood">
+  woodenbridge
+    </audio></p>
+    <p id="stone" onclick="stone()" class="choice"><audio src="audio/stones.wav" id="astone">
+  stones
+    </audio></p> -->
+
+    </div>
+  <!-- time presenting -->
+  <div id="walklocationbox">
+    <p id="walklocation">Good morning!</p>
+  </div>
+
+<div id="instruction1box">
+  <p id="instruction1">drag the red dot around to explore</p>
+</div>
+
+  <!--videodiv -->
+  <div id="walkexcircle">
+    <!-- draggable dot -->
+    <div id="dot"></div>
+  </div>
+  <div id="walkincircle">
+    <video src="video/动态钟表.mov" autoplay  id="walkvideo" ontimeupdate="timecount()" loop>
+
+    </video>
+  </div>
+<div style="width: 100%; height: 800px; " id="123">
+  <div id="draggable">
+    <div id="rotateable">
+      <div id="rotate">
+      </div>
+    </div>
+    <div id="drag">
+    </div>
+  </div>
+
+<!-- 锚点 -->
+  <div id="walkunilist">
+    <ul>
+      <li onclick="w1()"><a href="#">Beihang University</a>
+      </li>
+      <li onclick="w2()"><a href="#">Peking University</a>
+      </li>
+      <li onclick="w3()"><a href="#">South China University of Technology</a>
+      </li>
+      <li onclick="w4()"><a href="#">Beijing Normal University</a>
+      </li>
+      <li onclick="w5()"><a href="#">Capital Medical University</a>
+      </li>
+      <li onclick="w6()"><a href="#">Beijing Film Academy</a>
+      </li>
+      <li onclick="w7()"><a href="#">Johns Hopkins Unversity</a>
+      </li>
+      <li onclick="w8()"><a href="#">Beijing Forestry University</a>
+      </li>
+      <li onclick="w9()"><a href="#">Beijing Jiaotong University</a>
+      </li>
+      <li onclick="w10()"><a href="#">China Agricultural University</a>
+      </li>
+      <li onclick="w11()"><a href="#">Renmin University of China</a>
+      </li>
+      <li onclick="w12()"><a href="#">Southeast University of Political science & Law</a>
+      </li>
+      <li onclick="w13()"><a href="#">Shanghai Jiaotong University</a>
+      </li>
+      <li onclick="w14()"><a href="#">Beijing Institute of Technology</a>
+      </li>
+      <li onclick="w15()"><a href="#">University of Wisconsin Madison</a>
+      </li>
+      <li onclick="w16()"><a href="#">Beijing University of Technology</a></li>
+      <li onclick="w17()"><a href="#">Capital University of Economics and Business</a>
+      </li>
+      <li onclick="w18()"><a href="#">Fudan University</a>
+      </li>
+      <li onclick="w19()"><a href="#">Central University of Finance and Economics</a>
+      </li>
+      <li onclick="w20()"><a href="#">Sichuan University</a></li>
+      <li onclick="w21()"><a href="#">Sun Yat- Sen University</a>
+      </li>
+      <li onclick="w22()"><a href="#">Xi'an Jiaotong- Liverpool University</a></li>
+      <li onclick="w23()"><a href="#">Tsinghua University</a>
+      </li>
+      <li onclick="w24()"><a href="#">Huazhong University of Science and Technology</a>
+      </li>
+      <li onclick="w25()"><a href="#">Minzu University of China</a>
+      </li>
+
+  </div>
+
+</div>
+<img src="image/walkclock.png" alt="" id="walkclock">
+</div>
+
+
+
+
+
+<!-- bigdiv4 -->
+
+<div id="bigdiv4">
+  <button type="button" name="button" onclick="sitback()"  class="backbtn">Back</button>
+
+
+
+  <div id="instruction2box">
+    <p id="instruction2">drag the red dot around to explore</p>
+  </div>
+  <!--videodiv -->
+  <div id="sitexcircle">
+    <!-- draggable dot -->
+    <div id="dot2"></div>
+  </div>
+  <div id="sitincircle">
+    <video src="video/静态钟表.mov" autoplay  id="sitvideo"  ontimeupdate="timecount2()" loop>
+    </video>
+    </div>
+    <div style="width: 100%; height: 800px; " id="321">
+    <div id="draggable2">
+    <div id="rotateable2">
+      <div id="rotate2">
+      </div>
+    </div>
+    <div id="drag2">
+    </div>
+    </div>
+    <div id="sitlocationbox">
+      <p id="sitlocation">Good morning!</p>
+    </div>
+    <!-- 锚点 -->
+      <div id="situnilist">
+        <ul>
+          <li onclick="s1()"><a href="#">Peking University</a>
+          </li>
+          <li onclick="s2()"><a href="#">NYU Shanghai</a>
+          </li>
+          <li onclick="s3()"><a href="#">Capital Medical University</a>
+          </li>
+          <li onclick="s4()"><a href="#">Johns Hopkins Unversity</a>
+          </li>
+          <li onclick="s5()"><a href="#">Beijing Forestry University</a>
+          </li>
+          <li onclick="s6()"><a href="#">Beijing Jiaotong University</a>
+          </li>
+          <li onclick="s7()"><a href="#">China Agricultural University</a>
+          </li>
+          <li onclick="s8()"><a href="#">Beijing Film Academy</a>
+          </li>
+          <li onclick="s9()"><a href="#">Shanghai Jiaotong University</a>
+          </li>
+          <li onclick="s10()"><a href="#">Renmin University of China</a>
+          </li>
+          <li onclick="s11()"><a href="#">Southeast University of Political science & Law</a>
+          </li>
+          <li onclick="s12()"><a href="#">Beijing Institute of Technology</a>
+          </li>
+          <li onclick="s13()"><a href="#">Xi'an Jiaotong- Liverpool University</a>
+          </li>
+          <li onclick="s14()"><a href="#">Beijing Institute of Technology</a>
+          </li>
+          <li onclick="s15()"><a href="#">Beijing Normal University</a>
+          </li>
+          <li onclick="s16()"><a href="#">Fudan University</a></li>
+          <li onclick="s17()"><a href="#">University of Wisconsin Madison</a>
+          </li>
+          <li onclick="s18()"><a href="#">Central University of Finance and Economics</a>
+          </li>
+          <li onclick="s19()"><a href="#">Sichuan University</a>
+          </li>
+          <li onclick="s20()"><a href="#">Sun Yat- Sen University</a></li>
+          <li onclick="s21()"><a href="#">Tsinghua University</a>
+          </li>
+          <li onclick="s22()"><a href="#">Huazhong University of Science and Technology</a></li>
+          <li onclick="s23()"><a href="#">Minzu University of China</a>
+          </li>
+          <li onclick="s24()"><a href="#">Beihang University</a>
+          </li>
+
+      </div>
+      <div id="ski">
+        <p id="chooseweather">What is the weather?</p>
+
+          <p class="weather" id="p7">sunny</p>
+          <p class="weather" id="p8">rainy</p>
+          <p class="weather" id="p9">windy</p>
+
+
+
+      <button class="choice" type="button" name="button" id="y7" onclick="y7()">play</button>
+      <button class="choice" type="button" name="button" id="y8"onclick="y8()">play</button>
+      <button class="choice" type="button" name="button" id="y9"onclick="y9()">play</button>
+
+      <button class="choice" type="button" name="button" id="n7"onclick="n7()">pause</button>
+      <button class="choice" type="button" name="button" id="n8"onclick="n8()">pause</button>
+      <button class="choice" type="button" name="button" id="n9"onclick="n9()">pause</button>
+
+
+      <audio src="audio/sunny.wav" id="a7" loop></audio>
+      <audio src="audio/rainy.wav" id="a8" loop></audio>
+      <audio src="audio/windy.wav" id="a9" loop></audio>
+
+      </div>
+
+<img src="image/sitclock.png" alt="" id="sitclock">
+</div>
+</div>
+
+<div id="bigdiv5">
+    <button type="button" name="button" onclick="aback()"  class="backbtn">Back</button>
+  <p id="arttext">click and check out</p>
+  <a href="http://imanas.shanghai.nyu.edu/~zy1562/universe/"><img id="universe"src="image/universe.png" alt="" ></a>
+  <a href="http://imanas.shanghai.nyu.edu/~zy1562/comic/website/index.html"><img id="comic" src="image/comic.png" alt="" ></a>
+  <a href="http://imanas.shanghai.nyu.edu/~zy1562/audio-ElenaLydia/"><img id="audio" src="image/audio.png" alt="" ></a>
+  <a href="http://imanas.shanghai.nyu.edu/~zy1562/code/index.html"><img id="video" src="image/video.png" alt="" ></a>
+  <p id="blog">visit her <a href="https://wp.nyu.edu/carpediemlydia/">blog</a></p>
+</div>
+
+
+
+
+
+<!-- bigdiv4 -->
+<!-- bigdiv4 -->
+<!-- bigdiv4 -->
+<!-- bigdiv4 -->
+<!-- <div id="bigdiv4">
+  <button type="button" name="button" onclick="sitback()" class="backbtn">Back</button>
+
+  Choose your ground texture
+  <div id="ski">
+    <p id="chooseweather">What is the Weather?</p>
+
+      <p class="weather" id="p7">sunny</p>
+      <p class="weather" id="p8">rainy</p>
+      <p class="weather" id="p9">windy</p>
+
+
+
+  <button class="choice" type="button" name="button" id="y7" onclick="y7()">play</button>
+  <button class="choice" type="button" name="button" id="y8"onclick="y8()">play</button>
+  <button class="choice" type="button" name="button" id="y9"onclick="y9()">play</button>
+
+  <button class="choice" type="button" name="button" id="n7"onclick="n7()">pause</button>
+  <button class="choice" type="button" name="button" id="n8"onclick="n8()">pause</button>
+  <button class="choice" type="button" name="button" id="n9"onclick="n9()">pause</button>
+
+
+  <audio src="audio/sunny.wav" id="a7" loop></audio>
+  <audio src="audio/rainy.wav" id="a8" loop></audio>
+  <audio src="audio/windy.wav" id="a9" loop></audio> --> -->
+
+  <!-- <p id="grass" onclick="grass()" class="choice"><audio src="audio/longgrass.wav" id="agrass">
+  grass
+  </audio></p> -->
+  <!-- <p id="snow" onclick="snow()" class="choice"><audio src="audio/freshsnowwalk.wav" id="asnow">
+  snowland
+  </audio></p> -->
+  <!-- <p id="wood" onclick="wood()" class="choice"><audio src="audio/woodenbridge.wav" id="awood">
+  woodenbridge
+  </audio></p>
+  <p id="stone" onclick="stone()" class="choice"><audio src="audio/stones.wav" id="astone">
+  stones
+  </audio></p> -->
+
+  <!-- </div>
+   time presenting -->
+  <!-- <div id="sitlocationbox">
+  <p id="sitlocation">Look people are walking</p>
+  </div> -->
+
+  <!--videodiv -->
+  <!-- <div id="sitexcircle"> -->
+  <!-- draggable dot -->
+  <!-- <div id="dot2"></div>
+  </div>
+  <div id="sitincircle">
+  <video src="video/静态钟表.mov" autoplay  id="sitvideo" controls ontimeupdate="timecount2()" loop> -->
+
+  <!-- </video> -->
+  <!-- </div>
+  <div style="width: 100%; height: 800px; " id="321">
+  <div id="draggable2">
+  <div id="rotateable2">
+    <div id="rotate2">
+    </div>
+  </div>
+  <div id="drag2">
+  </div>
+  </div> -->
+
+  <!-- 锚点 -->
+  <!-- <div id="situnilist">
+  <ul>
+    <li onclick="s1()"><a href="#">Beihang University</a>
+    </li>
+    <li onclick="s2()"><a href="#">Peking University</a>
+    </li>
+    <li onclick="s3()"><a href="#">South China University of Technology</a>
+    </li>
+    <li onclick="s4()"><a href="#">Beijing Normal University</a>
+    </li>
+    <li onclick="s5()"><a href="#">Capital Medical University</a>
+    </li>
+    <li onclick="s6()"><a href="#">Beijing Film Academy</a>
+    </li>
+    <li onclick="s7()"><a href="#">Johns Hopkins Unversity</a>
+    </li>
+    <li onclick="s8()"><a href="#">Beijing Forestry University</a>
+    </li>
+    <li onclick="s9()"><a href="#">Beijing Jiaotong University</a>
+    </li>
+    <li onclick="s10()"><a href="#">China Agricultural University</a>
+    </li>
+    <li onclick="s11()"><a href="#">Renmin University of China</a>
+    </li>
+    <li onclick="s12()"><a href="#">Southeast University of Political science & Law</a>
+    </li>
+    <li onclick="s13()"><a href="#">Shanghai Jiaotong University</a>
+    </li>
+    <li onclick="s14()"><a href="#">Beijing Institute of Technology</a>
+    </li>
+    <li onclick="s15()"><a href="#">University of Wisconsin Madison</a>
+    </li>
+    <li onclick="s16()"><a href="#">Beijing University of Technology</a></li>
+    <li onclick="s17()"><a href="#">Capital University of Economics and Business</a>
+    </li>
+    <li onclick="s18()"><a href="#">Fudan University</a>
+    </li>
+    <li onclick="s19()"><a href="#">Central University of Finance and Economics</a>
+    </li>
+    <li onclick="s20()"><a href="#">Sichuan University</a></li>
+    <li onclick="s21()"><a href="#">Sun Yat- Sen University</a>
+    </li>
+    <li onclick="s22()"><a href="#">Xi'an Jiaotong- Liverpool University</a></li>
+    <li onclick="s23()"><a href="#">Tsinghua University</a>
+    </li>
+    <li onclick="s24()"><a href="#">Huazhong University of Science and Technology</a>
+    </li>
+    <li onclick="s25()"><a href="#">Minzu University of China</a>
+    </li> -->
+
+  <!-- </div> -->
+  <!-- <img src="image/sitclock.png" alt="" id="sitclock"> -->
+  <!-- </div> -->
+ <!-- --> 
+
+
+
+
+
+
+
+
+    	<script src="script.js" type="text/javascript"></script>
+  </body>
+</html>
